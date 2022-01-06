@@ -1,0 +1,33 @@
+server:
+  port: 8765
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka    
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: parceiros-service
+        uri: lb://parceiros-service
+        predicates:
+        - Path=/parceiros-service/**
+      - id: veiculos-service
+        uri: lb://veiculos-service
+        predicates:
+        - Path=/veiculos-service/** 
+      - id: notificacoes-service
+        uri: lb://notificacoes-service
+        predicates:
+        - Path=/notificacoes-service/**
+      - id: openapi
+        uri: lb://api-gateway
+        predicates:
+        - Path=/v3/api-docs/**
+        filters:
+        - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
