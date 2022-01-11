@@ -1,5 +1,5 @@
 server:
-  port: 8081 #'${PORT:0}'
+  port: '${PORT:0}'
 eureka:
   instance:
     instance-id: >-
@@ -17,7 +17,7 @@ spring:
       profile: test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ms_notificacoes?useTimezone=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/41scj_ms_notificacoes?useTimezone=true&serverTimezone=UTC
     username: root
     password: asd123qwe!
   jackson:
@@ -33,7 +33,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
   flyway:
     url: jdbc:mysql://localhost:3306
-    schemas: ms_notificacoes
+    schemas: 41scj_ms_notificacoes
     user: root
     password: asd123qwe!      
 management:

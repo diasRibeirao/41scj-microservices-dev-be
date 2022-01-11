@@ -13,14 +13,10 @@ spring:
         locator:
           enabled: true
       routes:
-      - id: parceiros-service
-        uri: lb://parceiros-service
+      - id: usuarios-service
+        uri: lb://usuarios-service
         predicates:
-        - Path=/parceiros-service/**
-      - id: veiculos-service
-        uri: lb://veiculos-service
-        predicates:
-        - Path=/veiculos-service/** 
+        - Path=/usuarios-service/**
       - id: notificacoes-service
         uri: lb://notificacoes-service
         predicates:
