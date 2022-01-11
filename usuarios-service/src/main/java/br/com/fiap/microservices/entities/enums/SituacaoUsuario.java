@@ -4,7 +4,8 @@ public enum SituacaoUsuario {
 	
 	AG_ATIVACAO(1, "Aguardando ativação"), 
 	ATIVO(2, "Ativo"),
-	AG_PAGAMENTO(3, "Aguardando pagamento");
+	AG_PAGAMENTO(3, "Aguardando pagamento"),
+	SOLICITOU_NOVA_SENHA(4, "Solicitou nova senha");
 
 	private Integer id;
 	private String description;
