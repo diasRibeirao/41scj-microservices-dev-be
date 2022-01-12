@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import br.com.fiap.microservices.entities.Usuario;
 import br.com.fiap.microservices.entities.dto.NotificacaoSendDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
+import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
+import br.com.fiap.microservices.entities.enums.Notificacao;
 import br.com.fiap.microservices.entities.enums.SituacaoUsuario;
 import br.com.fiap.microservices.feignclients.NotificacoesFeignClients;
 import br.com.fiap.microservices.repositories.UsuarioRepository;
@@ -46,7 +48,7 @@ public class UsuarioService {
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
-		notificacoesFeignClients.sms(buildNotificacao(usuario));
+		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
 		return usuario;
 	}
 
@@ -70,6 +72,16 @@ public class UsuarioService {
 		return repository.save(usuarioUpdate);
 	}
 
+	public Usuario esqueceuSenha(UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
+		Usuario usuarioUpdate = findByTelefone(usuarioEsqueceuSenhaDTO.getTelefone());
+		usuarioUpdate.setCodigoAtivar(Utils.buildCodigoAtivacao());
+		usuarioUpdate.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
+		usuarioUpdate.setSituacao(SituacaoUsuario.SOLICITOU_NOVA_SENHA.getId());
+
+		notificacoesFeignClients.sms(buildNotificacao(usuarioUpdate, Notificacao.ESQUECEU_SENHA));
+		return repository.save(usuarioUpdate);
+	}
+
 	public Usuario update(Usuario usuario) {
 		Usuario usuarioUpdate = find(usuario.getId());
 		updateData(usuarioUpdate, usuario);
@@ -90,9 +102,9 @@ public class UsuarioService {
 		usuarioUpdate.setSituacao(usuario.getSituacao());
 	}
 
-	private NotificacaoSendDTO buildNotificacao(Usuario usuario) {
+	private NotificacaoSendDTO buildNotificacao(Usuario usuario, Notificacao notificacao) {
 		return new NotificacaoSendDTO("+55" + usuario.getTelefone(),
-				"Olá! Seu código de ativação na VanCerta é " + usuario.getCodigoAtivar());
+				String.format(notificacao.getDescricao(), usuario.getCodigoAtivar()));
 	}
 
 }

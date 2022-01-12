@@ -22,6 +22,7 @@ import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
+import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
 import br.com.fiap.microservices.entities.dto.converter.UsuarioConverter;
 import br.com.fiap.microservices.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,6 +78,13 @@ public class UsuarioResource {
 	@PostMapping(value = "/ativar")
 	public ResponseEntity<Void> ativar(@Valid @RequestBody UsuarioAtivarDTO usuarioAtivarDTO) {
 		usuarioService.ativar(usuarioAtivarDTO);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@Operation(summary = "Esqueceu a senha")
+	@PostMapping(value = "/esqueceu-senha")
+	public ResponseEntity<Void> esqueceuSenha(@Valid @RequestBody UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
+		usuarioService.esqueceuSenha(usuarioEsqueceuSenhaDTO);
 		return ResponseEntity.noContent().build();
 	}
 

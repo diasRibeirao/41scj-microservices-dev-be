@@ -8,19 +8,19 @@ public enum SituacaoUsuario {
 	SOLICITOU_NOVA_SENHA(4, "Solicitou nova senha");
 
 	private Integer id;
-	private String description;
+	private String descricao;
 
 	private SituacaoUsuario(Integer id, String descricao) {
 		this.id = id;
-		this.description = descricao;
+		this.descricao = descricao;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDescricao() {
+		return descricao;
 	}
 
 	public static SituacaoUsuario toEnum(Integer id) {
