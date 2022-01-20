@@ -2,14 +2,14 @@ package br.com.fiap.microservices;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.config.server.EnableConfigServer;
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
-@EnableConfigServer
-public class ApplicationConfigServer {
-	
+@EnableEurekaServer
+public class Application {
+
 	public static void main(String[] args) {
-		SpringApplication.run(ApplicationConfigServer.class, args);
+		SpringApplication.run(Application.class, args);
 	}
-	
+
 }

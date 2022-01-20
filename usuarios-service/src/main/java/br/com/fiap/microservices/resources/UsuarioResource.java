@@ -23,6 +23,7 @@ import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
+import br.com.fiap.microservices.entities.dto.UsuarioOauthDTO;
 import br.com.fiap.microservices.entities.dto.converter.UsuarioConverter;
 import br.com.fiap.microservices.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +32,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "API's Usuários")
 @RestController
 @RefreshScope
-@RequestMapping(value = "/usuarios-service")
+@RequestMapping(value = "/usuarios")
 public class UsuarioResource {
 
 	@Autowired
@@ -51,6 +52,13 @@ public class UsuarioResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
 		UsuarioDTO obj = converter.Parse(usuarioService.find(id));
+		return ResponseEntity.ok(obj);
+	}
+	
+	@Operation(summary = "Busca um usuário pelo seu Login")
+	@GetMapping(value = "/login/{login}")
+	public ResponseEntity<UsuarioOauthDTO> findByLogin(@PathVariable String login) {
+		UsuarioOauthDTO obj = converter.ParseUsuarioOauthDTO(usuarioService.findByLogin(login));
 		return ResponseEntity.ok(obj);
 	}
 

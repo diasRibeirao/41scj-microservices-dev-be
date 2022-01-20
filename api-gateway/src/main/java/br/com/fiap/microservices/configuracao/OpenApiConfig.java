@@ -26,7 +26,7 @@ public class OpenApiConfig {
 					routeDefinition -> routeDefinition.getId()
 						.matches(".*-service"))
 							.forEach(routeDefinition -> {
-								String name = routeDefinition.getId();
+								String name = routeDefinition.getId().replace("-service", "");
 								config.addGroup(name);
 								GroupedOpenApi.builder()
 									.pathsToMatch("/" + name + "/**")

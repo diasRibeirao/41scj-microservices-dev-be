@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "API's Roles")
 @RestController
 @RefreshScope
-@RequestMapping(value = "/usuarios-service")
+@RequestMapping(value = "/usuarios")
 public class RoleResource {
 
 	@Autowired
@@ -33,13 +33,6 @@ public class RoleResource {
 	public ResponseEntity<Set<RoleDTO>> findAllRoles() {
 		Set<RoleDTO> list = converter.Parse(roleService.findAll());
 		return ResponseEntity.ok(list);
-	}
-
-	@Operation(summary = "Busca um usuário pelo seu ID")
-	@GetMapping(value = "/roles/{id}")
-	public ResponseEntity<RoleDTO> findByIdRole(@PathVariable Long id) {
-		RoleDTO obj = converter.Parse(roleService.find(id));
-		return ResponseEntity.ok(obj);
 	}
 
 	@Operation(summary = "Busca um usuário pelo seu NOME")

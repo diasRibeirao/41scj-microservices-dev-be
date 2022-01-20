@@ -15,6 +15,6 @@ import br.com.fiap.microservices.entities.dto.NotificacaoSendDTO;
 @FeignClient(name = "notificacoes-service")
 public interface NotificacoesFeignClients {
 
-	@GetMapping(value = "/notificacoes-service/sms")
+	@GetMapping(value = "/notificacoes/sms")
 	public ResponseEntity<NotificacaoDTO> sms(@Valid @RequestBody NotificacaoSendDTO notificacaoSendDTO);
 }

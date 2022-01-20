@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.fiap.microservices.entities.Usuario;
@@ -23,6 +24,9 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository repository;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	private NotificacoesFeignClients notificacoesFeignClients;
@@ -42,9 +46,16 @@ public class UsuarioService {
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Telefone: " + telefone + ", Tipo: " + Usuario.class.getName()));
 	}
+	
+	public Usuario findByLogin(String login) {
+		Optional<Usuario> obj = repository.findByLogin(login);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Login: " + login + ", Tipo: " + Usuario.class.getName()));
+	}
 
 	public Usuario insert(Usuario usuario) {
 		usuario.setId(null);
+		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);

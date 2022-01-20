@@ -20,7 +20,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "API's Notificações")
 @RestController
 @RefreshScope
-@RequestMapping(value = "/notificacoes-service")
+@RequestMapping(value = "/notificacoes")
 public class NotificacoesResource {
 
 	@Autowired

@@ -7,7 +7,9 @@ eureka:
 spring:
   application:
     name: api-gateway
-  cloud:
+  config:
+    import: optional:configserver:http://localhost:8888/
+  cloud:  
     gateway:
       discovery:
         locator:
@@ -16,11 +18,11 @@ spring:
       - id: usuarios-service
         uri: lb://usuarios-service
         predicates:
-        - Path=/usuarios-service/**
+        - Path=/usuarios/**
       - id: notificacoes-service
         uri: lb://notificacoes-service
         predicates:
-        - Path=/notificacoes-service/**
+        - Path=/notificacoes/**
       - id: openapi
         uri: lb://api-gateway
         predicates:

@@ -45,4 +45,4 @@ management:
 springdoc:
   #show-actuator: true
   api-docs:
-    path: notificacoes-service/v3/api-docs
+    path: notificacoes/v3/api-docs

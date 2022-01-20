@@ -9,9 +9,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.License;
 
 @OpenAPIDefinition(info = 
-@Info(title = "API de Serviço Noficicações",
+@Info(title = "API de Serviço Notificações",
 	version = "v1",
-	description = "Documentação das API's de Serviço Noficicações"))
+	description = "Documentação das API's de Serviço Notificações"))
 public class OpenApiConfig {
 	
 	@Bean
@@ -20,7 +20,7 @@ public class OpenApiConfig {
 			.components(new Components())
 			.info(
 				new io.swagger.v3.oas.models.info.Info()
-				.title("API Serviço Noficicações")
+				.title("API Serviço Notificações")
 				.version("v1")
 				.license(
 					new License()

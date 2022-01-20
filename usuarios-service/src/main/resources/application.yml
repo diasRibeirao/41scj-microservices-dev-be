@@ -46,4 +46,4 @@ management:
 springdoc:
   #show-actuator: true
   api-docs:
-    path: usuarios-service/v3/api-docs
+    path: usuarios/v3/api-docs
