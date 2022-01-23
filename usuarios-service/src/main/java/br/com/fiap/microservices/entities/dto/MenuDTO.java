@@ -8,16 +8,14 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UsuarioOauthDTO {
-
+public class MenuDTO {
 	private Long id;
-	private String nome;
-	private String sobrenome;
-	private String email;
-	private String login;
-	private String senha;
-	private String telefone;
-	private Integer situacao;
+	private String nome;	
+	private String descricao;	
+	private String icone;	
+	private String rota;	
+	private Integer ordem;
 	private Set<RoleDTO> roles = new HashSet<RoleDTO>();
-
+	
+	
 }

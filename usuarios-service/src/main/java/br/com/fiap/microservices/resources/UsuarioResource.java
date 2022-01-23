@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.fiap.microservices.entities.Usuario;
+import br.com.fiap.microservices.entities.dto.LoginDTO;
+import br.com.fiap.microservices.entities.dto.UsuarioNovaSenhaDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioOauthDTO;
 import br.com.fiap.microservices.entities.dto.converter.UsuarioConverter;
 import br.com.fiap.microservices.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,9 +57,9 @@ public class UsuarioResource {
 	}
 	
 	@Operation(summary = "Busca um usuário pelo seu Login")
-	@GetMapping(value = "/login/{login}")
-	public ResponseEntity<UsuarioOauthDTO> findByLogin(@PathVariable String login) {
-		UsuarioOauthDTO obj = converter.ParseUsuarioOauthDTO(usuarioService.findByLogin(login));
+	@PostMapping(value = "/login")
+	public ResponseEntity<UsuarioDTO> findByLogin(@Valid @RequestBody LoginDTO loginDTO) {
+		UsuarioDTO obj = converter.Parse(usuarioService.validarLogin(loginDTO.getLogin(), loginDTO.getSenha(), loginDTO.getRole()));
 		return ResponseEntity.ok(obj);
 	}
 
@@ -81,19 +82,33 @@ public class UsuarioResource {
 		obj = usuarioService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@Operation(summary = "Reenviar código de ativação de um usuário")
+	@PostMapping(value = "/reenviar-codigo/{id}")
+	public ResponseEntity<Void> reenviarCodigo(@PathVariable Long id) {
+		usuarioService.reenviarCodigo(id);
+		return ResponseEntity.noContent().build();
+	}	
 
 	@Operation(summary = "Ativar um novo usuário")
 	@PostMapping(value = "/ativar")
-	public ResponseEntity<Void> ativar(@Valid @RequestBody UsuarioAtivarDTO usuarioAtivarDTO) {
-		usuarioService.ativar(usuarioAtivarDTO);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<UsuarioDTO> ativar(@Valid @RequestBody UsuarioAtivarDTO usuarioAtivarDTO) {
+		UsuarioDTO obj = converter.Parse(usuarioService.ativar(usuarioAtivarDTO));;
+		return ResponseEntity.ok(obj);
+	}
+	
+	@Operation(summary = "Salvar nova senha do usuário")
+	@PutMapping("/reset-password/{id}")
+	public ResponseEntity<UsuarioDTO> resetPassword(@PathVariable Long id, @Valid @RequestBody UsuarioNovaSenhaDTO novaSenha) {
+		UsuarioDTO obj = converter.Parse(usuarioService.resetPassword(id, novaSenha.getSenha(), novaSenha.getConfirmarSenha()));
+		return ResponseEntity.ok(obj);
 	}
 	
 	@Operation(summary = "Esqueceu a senha")
 	@PostMapping(value = "/esqueceu-senha")
-	public ResponseEntity<Void> esqueceuSenha(@Valid @RequestBody UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
-		usuarioService.esqueceuSenha(usuarioEsqueceuSenhaDTO);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<UsuarioDTO> esqueceuSenha(@Valid @RequestBody UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
+		UsuarioDTO obj = converter.Parse(usuarioService.esqueceuSenha(usuarioEsqueceuSenhaDTO));
+		return ResponseEntity.ok(obj);
 	}
 
 }

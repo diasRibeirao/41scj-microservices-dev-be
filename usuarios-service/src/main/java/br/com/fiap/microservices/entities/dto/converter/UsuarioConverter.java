@@ -10,7 +10,6 @@ import br.com.fiap.microservices.entities.Usuario;
 import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioOauthDTO;
 import br.com.fiap.microservices.entities.enums.SituacaoUsuario;
 
 @Service
@@ -69,20 +68,4 @@ public class UsuarioConverter {
 		return origin.stream().map(obj -> ParseAtualizarDTO(obj)).collect(Collectors.toList());
 	}
 
-	public UsuarioOauthDTO ParseUsuarioOauthDTO(Usuario origin) {
-		if (origin == null)
-			return null;
-
-		return new UsuarioOauthDTO(origin.getId(), origin.getNome(), origin.getSobrenome(), origin.getEmail(),
-				origin.getLogin(), origin.getSenha(), origin.getTelefone(), origin.getSituacao(),
-				roleConverter.Parse(origin.getRoles()));
-
-	}
-
-	public List<UsuarioOauthDTO> ParseUsuarioOauthDTO(List<Usuario> origin) {
-		if (origin == null)
-			return null;
-
-		return origin.stream().map(obj -> ParseUsuarioOauthDTO(obj)).collect(Collectors.toList());
-	}
 }

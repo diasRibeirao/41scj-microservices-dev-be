@@ -2,11 +2,13 @@ package br.com.fiap.microservices.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.fiap.microservices.entities.Role;
 import br.com.fiap.microservices.entities.Usuario;
 import br.com.fiap.microservices.entities.dto.NotificacaoSendDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
@@ -24,7 +26,7 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository repository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -37,20 +39,28 @@ public class UsuarioService {
 
 	public Usuario find(Long id) {
 		Optional<Usuario> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
 	}
 
 	public Usuario findByTelefone(String telefone) {
 		Optional<Usuario> obj = repository.findByTelefone(telefone);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Telefone: " + telefone + ", Tipo: " + Usuario.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário não encontrado"));
 	}
-	
-	public Usuario findByLogin(String login) {
+
+	public Usuario validarLogin(String login, String senha, String role) {		
 		Optional<Usuario> obj = repository.findByLogin(login);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Login: " + login + ", Tipo: " + Usuario.class.getName()));
+
+		if (obj.isEmpty() || !containsRole(obj.get().getRoles(), role)
+				|| !passwordEncoder.matches(senha, obj.get().getSenha())) {
+			throw new ObjectNotFoundException("Usuário não encontrado");
+		}
+		// demais validações. Ex se está ativo, etc...
+
+		return obj.get();
+	} 
+
+	public boolean containsRole(final Set<Role> list, final String nome) {
+		return list.stream().filter(o -> o.getNome().equals(nome)).findFirst().isPresent();
 	}
 
 	public Usuario insert(Usuario usuario) {
@@ -66,8 +76,16 @@ public class UsuarioService {
 	public Usuario ativar(UsuarioAtivarDTO usuarioAtivarDTO) {
 		Usuario usuarioUpdate = findByTelefone(usuarioAtivarDTO.getTelefone());
 
-		if (!usuarioUpdate.getSituacao().equals(SituacaoUsuario.AG_ATIVACAO.getId())) {
-			throw new AtivarUsuarioException("Não é possível ativar, usuario já ativado.");
+		if (usuarioAtivarDTO.getIdNotificacao().equals(Notificacao.NOVO_USUARIO.getId())) {
+			if (!usuarioUpdate.getSituacao().equals(SituacaoUsuario.AG_ATIVACAO.getId())) {
+				throw new AtivarUsuarioException("Não é possível ativar, usuario já ativado.");
+			}
+		}
+		
+		if (usuarioAtivarDTO.getIdNotificacao().equals(Notificacao.ESQUECEU_SENHA.getId())) {
+			if (!usuarioUpdate.getSituacao().equals(SituacaoUsuario.SOLICITOU_NOVA_SENHA.getId())) {
+				throw new AtivarUsuarioException("Não é possível salvar, usuário não solicitou esqueceu senha.");
+			}
 		}
 
 		if (usuarioUpdate.getDataLimiteAtivar().before(Utils.dataAtual())) {
@@ -81,6 +99,20 @@ public class UsuarioService {
 		updateData(usuarioUpdate);
 
 		return repository.save(usuarioUpdate);
+	}
+	
+	public Usuario resetPassword(Long id, String senha, String confirmarSenha) {
+		Usuario usuario = find(id);
+		
+		if (!senha.equals(confirmarSenha)) {
+			throw new AtivarUsuarioException("As senhas não conferem");
+		}
+		
+		usuario.setSenha(passwordEncoder.encode(senha));
+
+		updateData(usuario);
+
+		return repository.save(usuario);
 	}
 
 	public Usuario esqueceuSenha(UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
@@ -97,6 +129,20 @@ public class UsuarioService {
 		Usuario usuarioUpdate = find(usuario.getId());
 		updateData(usuarioUpdate, usuario);
 		return repository.save(usuarioUpdate);
+	}
+
+	public Usuario reenviarCodigo(Long id) {
+		Usuario usuario = find(id);
+
+		if (!usuario.getSituacao().equals(SituacaoUsuario.AG_ATIVACAO.getId())) {
+			throw new ObjectNotFoundException("Reenvio apenas para usuário aguardando ativação.");
+		}
+
+		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
+		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
+		usuario = repository.save(usuario);
+		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		return usuario;
 	}
 
 	private void updateData(Usuario usuarioUpdate) {
@@ -117,5 +163,7 @@ public class UsuarioService {
 		return new NotificacaoSendDTO("+55" + usuario.getTelefone(),
 				String.format(notificacao.getDescricao(), usuario.getCodigoAtivar()));
 	}
+
+	
 
 }
