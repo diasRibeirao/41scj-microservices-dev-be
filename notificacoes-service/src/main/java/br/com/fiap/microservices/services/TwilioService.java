@@ -27,22 +27,28 @@ public class TwilioService {
 	@Value("${twilio.account.phone}")
 	private String twilioAccountPhone;
 
-	public Notificacao enviarSms(Notificacao notificacao) {
-		Twilio.init(this.twilioAccountSid, this.twilioAuthToken);
-				
-		Message message = Message.creator(
-                new com.twilio.type.PhoneNumber(notificacao.getPara()),
-                new com.twilio.type.PhoneNumber(this.twilioAccountPhone),
-                notificacao.getMensagem())
-            .create();
-
-        System.out.println(message.getSid());
-        notificacao.setObservacao(message.getBody());
-        notificacao.setData(Calendar.getInstance().getTime());
-        
-        repository.save(notificacao);
-        
-        return notificacao;
+	public void enviarSms(Notificacao notificacao) {
+		try {
+			Twilio.init(this.twilioAccountSid, this.twilioAuthToken);
+					
+			Message message = Message.creator(
+	                new com.twilio.type.PhoneNumber(notificacao.getPara()),
+	                new com.twilio.type.PhoneNumber(this.twilioAccountPhone),
+	                notificacao.getMensagem())
+	            .create();
+	
+	        System.out.println(message.getSid());
+	        notificacao.setObservacao(message.getBody());
+	        notificacao.setData(Calendar.getInstance().getTime());
+	        
+	        repository.save(notificacao);
+		} catch (Exception e) {
+			System.out.println("Erro. " + e.getMessage());
+			notificacao.setObservacao("Erro. " + e.getMessage());
+	        notificacao.setData(Calendar.getInstance().getTime());
+	        
+	        repository.save(notificacao);
+		}
 	}
 
 	

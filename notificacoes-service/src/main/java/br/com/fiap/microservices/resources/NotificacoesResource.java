@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.fiap.microservices.entities.Notificacao;
 import br.com.fiap.microservices.entities.dto.NotificacaoSendDTO;
 import br.com.fiap.microservices.entities.dto.converter.NotificacaoConverter;
-import br.com.fiap.microservices.services.TwilioService;
+import br.com.fiap.microservices.mq.SMSQueueSender;
+import br.com.fiap.microservices.services.NotificacoesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -24,16 +25,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class NotificacoesResource {
 
 	@Autowired
-	private TwilioService service;
-	
+	private NotificacoesService notificacoesService;
+
 	@Autowired
 	private NotificacaoConverter converter;
+
+	@Autowired
+	private SMSQueueSender smsQueueSender;
 
 	@Operation(summary = "Enviar mensagem por SMS")
 	@PostMapping(value = "/sms")
 	public ResponseEntity<Notificacao> sms(@Valid @RequestBody NotificacaoSendDTO notificacaoSendDTO) {
 		Notificacao notificacao = converter.ParseDTO(notificacaoSendDTO);
-		notificacao = service.enviarSms(notificacao);
+		notificacao = notificacoesService.insert(notificacao);
+		this.smsQueueSender.send(notificacao);
 		return ResponseEntity.ok(notificacao);
 	}
 
