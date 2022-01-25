@@ -30,6 +30,7 @@
   <li><strong>Spring Cloud OpenFeign:</strong> Para consumo entre os microserviços.</li>
   <li><strong>Eureka, Feign e Spring Cloud Load Balancer:</strong> Para localizar serviços com o objetivo de balanceamento de carga e failover de servidores.</li>
   <li><strong>Spring Cloud Load API Gateway:</strong> Para gerenciar e rotear as requisições aos serviços, a partir do nome dos microserviços, independente de quantidade de instâncias e de porta.</li>
+  <li><strong>COMUNICAÇÃO ASSINCRONA EVENTOS com RabbitMQ: </strong> Para o envio de SMS, envio de código de confirmação para cadastro novo de usuário, esqueceu a senha, etc...
 </ul>
 
 ##### Informações adicionais:
