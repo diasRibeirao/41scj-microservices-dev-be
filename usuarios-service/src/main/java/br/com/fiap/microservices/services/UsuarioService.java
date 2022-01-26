@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,9 @@ public class UsuarioService {
 
 	@Autowired
 	private NotificacoesFeignClients notificacoesFeignClients;
+	
+	@Value("${development.enabled:false}")
+	private boolean ambiente;
 
 	public List<Usuario> findAll() {
 		return repository.findAll();
@@ -69,7 +73,9 @@ public class UsuarioService {
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
-		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		if (!ambiente) {
+			notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		}
 		return usuario;
 	}
 
