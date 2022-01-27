@@ -70,11 +70,12 @@ public class UsuarioService {
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
 		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		notificacoesFeignClients.slack("Usuário " + usuario.getNome() + " " + usuario.getSobrenome() + " cadastrado com sucesso!");
 		return usuario;
 	}
 
 	public Usuario ativar(UsuarioAtivarDTO usuarioAtivarDTO) {
-		Usuario usuarioUpdate = findByTelefone(usuarioAtivarDTO.getTelefone());
+		Usuario usuarioUpdate = findByTelefone(Utils.removeMaskCelular(usuarioAtivarDTO.getTelefone()));
 
 		if (usuarioAtivarDTO.getIdNotificacao().equals(Notificacao.NOVO_USUARIO.getId())) {
 			if (!usuarioUpdate.getSituacao().equals(SituacaoUsuario.AG_ATIVACAO.getId())) {
@@ -116,7 +117,7 @@ public class UsuarioService {
 	}
 
 	public Usuario esqueceuSenha(UsuarioEsqueceuSenhaDTO usuarioEsqueceuSenhaDTO) {
-		Usuario usuarioUpdate = findByTelefone(usuarioEsqueceuSenhaDTO.getTelefone());
+		Usuario usuarioUpdate = findByTelefone(Utils.removeMaskCelular(usuarioEsqueceuSenhaDTO.getTelefone()));
 		usuarioUpdate.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuarioUpdate.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuarioUpdate.setSituacao(SituacaoUsuario.SOLICITOU_NOVA_SENHA.getId());
@@ -163,7 +164,4 @@ public class UsuarioService {
 		return new NotificacaoSendDTO("+55" + usuario.getTelefone(),
 				String.format(notificacao.getDescricao(), usuario.getCodigoAtivar()));
 	}
-
-	
-
 }

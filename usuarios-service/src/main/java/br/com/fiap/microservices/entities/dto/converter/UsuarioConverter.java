@@ -11,6 +11,7 @@ import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
 import br.com.fiap.microservices.entities.enums.SituacaoUsuario;
+import br.com.fiap.microservices.utils.Utils;
 
 @Service
 public class UsuarioConverter {
@@ -39,8 +40,8 @@ public class UsuarioConverter {
 		if (origin == null)
 			return null;
 
-		return new Usuario(origin.getNome(), origin.getSobrenome(), origin.getEmail(), origin.getTelefone(),
-				origin.getTelefone(), origin.getSenha(), SituacaoUsuario.AG_ATIVACAO, null, null,
+		return new Usuario(origin.getNome(), origin.getSobrenome(), origin.getEmail(), Utils.removeMaskCelular(origin.getTelefone()),
+				Utils.removeMaskCelular(origin.getTelefone()), origin.getSenha(), SituacaoUsuario.AG_ATIVACAO, null, null,
 				roleConverter.ParseAdicionarDTO(origin.getRoles()));
 	}
 
@@ -56,8 +57,8 @@ public class UsuarioConverter {
 		if (origin == null)
 			return null;
 
-		return new Usuario(origin.getNome(), origin.getSobrenome(), origin.getEmail(), origin.getTelefone(),
-				origin.getTelefone(), null, SituacaoUsuario.toEnum(origin.getSituacao()), null, null,
+		return new Usuario(origin.getNome(), origin.getSobrenome(), origin.getEmail(), Utils.removeMaskCelular(origin.getTelefone()),
+				Utils.removeMaskCelular(origin.getTelefone()), null, SituacaoUsuario.toEnum(origin.getSituacao()), null, null,
 				roleConverter.ParseAdicionarDTO(origin.getRoles()));
 	}
 

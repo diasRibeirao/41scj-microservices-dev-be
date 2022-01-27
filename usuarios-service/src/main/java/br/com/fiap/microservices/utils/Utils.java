@@ -20,5 +20,9 @@ public class Utils {
 		
 		return data.getTime();
 	}
+	
+	public static String removeMaskCelular(String str) {
+		return str.replace("(","").replace(")", "").replace(" ","").replace("-","");
+	}
 
 }

@@ -26,7 +26,7 @@ public class UsuarioAtualizarDTO {
 	private String email;
 
 	@NotEmpty(message = "Preenchimento obrigatório!")
-	@Size(min = 10, max = 11, message = "O telefone deve possuir entre {min} e {max} caracteres!")
+	@Size(min = 15, max = 15, message = "O telefone deve possuir entre {min} e {max} caracteres!")
 	private String telefone;
 
 	@NotNull(message = "Preenchimento obrigatório!")
