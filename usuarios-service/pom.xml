@@ -127,7 +127,12 @@
 			<version>2.4.0</version><!--$NO-MVN-MAN-VER$-->
 			<scope>test</scope>
 		</dependency>
-
+    <dependency>
+       <groupId>org.flywaydb.flyway-test-extensions</groupId>
+       <artifactId>flyway-spring-test</artifactId>
+       <version>7.0.0</version>
+       <scope>test</scope>
+    </dependency>
 
 	</dependencies>
 	<dependencyManagement>

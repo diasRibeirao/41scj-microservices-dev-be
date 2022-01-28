@@ -7,10 +7,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.com.fiap.microservices.services.validation.UsuarioAtualizar;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @UsuarioAtualizar
 @Data
+@AllArgsConstructor
 public class UsuarioAtualizarDTO {
 
 	@NotEmpty(message = "Preenchimento obrigatório!")

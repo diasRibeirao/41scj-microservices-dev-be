@@ -94,7 +94,7 @@ public class UsuarioService {
 			}
 		}
 
-		if (usuarioUpdate.getDataLimiteAtivar().before(Utils.dataAtual())) {
+		if (!ambiente && usuarioUpdate.getDataLimiteAtivar().before(Utils.dataAtual())) {
 			throw new AtivarUsuarioException("Não é possível ativar, data limite expirou.");
 		}
 
@@ -126,8 +126,8 @@ public class UsuarioService {
 		usuarioUpdate.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuarioUpdate.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuarioUpdate.setSituacao(SituacaoUsuario.SOLICITOU_NOVA_SENHA.getId());
-
-		notificacoesFeignClients.sms(buildNotificacao(usuarioUpdate, Notificacao.ESQUECEU_SENHA));
+		if (!ambiente) 
+			notificacoesFeignClients.sms(buildNotificacao(usuarioUpdate, Notificacao.ESQUECEU_SENHA));
 		return repository.save(usuarioUpdate);
 	}
 
@@ -147,7 +147,8 @@ public class UsuarioService {
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
-		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		if (!ambiente) 
+			notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
 		return usuario;
 	}
 

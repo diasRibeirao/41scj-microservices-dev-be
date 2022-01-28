@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/41scj_ms_usuarios_test?useTimezone=true&serverTimezone=UTC
     username: root
-    password: asd123qwe!
+    password: 12345678
   jackson:
     default-property-inclusion: NON_NULL
     serialization:
@@ -32,7 +32,7 @@ spring:
     url: jdbc:mysql://localhost:3306
     schemas: 41scj_ms_usuarios_test
     user: root
-    password: asd123qwe!      
+    password: 12345678      
 management:
   endpoints:
     web:
