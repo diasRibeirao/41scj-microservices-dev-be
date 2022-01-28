@@ -4,4 +4,8 @@
         ('Pais ou Responsável', 'Cadastro de pais ou responsável', 'bi bi-people', '/definir', 3),
         ('Notificações', 'Central de notificações', 'bi bi-bell', '/definir', 4),
         ('Transporte', 'Iniciar o transporte escolar', 'bi bi-arrows-move', '/definir', 5),
-        ('Perguntas frequentes', 'Perguntas mais frequentes', 'bi bi-question-circle', '/definir', 6);
+        ('Perguntas frequentes', 'Perguntas mais frequentes', 'bi bi-question-circle', '/definir', 6),
+        ('Transporte Escolar', 'Cadastro de transporte escolar', 'bi bi-gear', '/definir', 1),
+        ('Filhos', 'Cadastro de filhos', 'bi bi-people', '/definir', 2),
+        ('Notificações', 'Central de notificações', 'bi bi-bell', '/definir', 3),
+        ('Perguntas frequentes', 'Perguntas mais frequentes', 'bi bi-question-circle', '/definir', 4);
