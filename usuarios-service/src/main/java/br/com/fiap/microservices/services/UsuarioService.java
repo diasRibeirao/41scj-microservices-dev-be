@@ -113,7 +113,9 @@ public class UsuarioService {
 		if (!senha.equals(confirmarSenha)) {
 			throw new AtivarUsuarioException("As senhas não conferem");
 		}
-		
+		if (usuario.getSituacao() != SituacaoUsuario.ATIVO.getId()) {
+			throw new AtivarUsuarioException("Usuario inativo.");
+		}
 		usuario.setSenha(passwordEncoder.encode(senha));
 
 		updateData(usuario);
