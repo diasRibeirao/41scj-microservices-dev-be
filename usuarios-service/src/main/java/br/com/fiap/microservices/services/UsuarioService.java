@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,9 @@ public class UsuarioService {
 
 	@Autowired
 	private NotificacoesFeignClients notificacoesFeignClients;
+	
+	@Value("${development.enabled:false}")
+	private boolean ambiente;
 
 	public List<Usuario> findAll() {
 		return repository.findAll();
@@ -69,8 +73,11 @@ public class UsuarioService {
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
-		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
-		notificacoesFeignClients.slack("Usuário " + usuario.getNome() + " " + usuario.getSobrenome() + " cadastrado com sucesso!");
+
+		if (!ambiente) {
+      notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+      notificacoesFeignClients.slack("Usuário " + usuario.getNome() + " " + usuario.getSobrenome() + " cadastrado com sucesso!");
+		}
 		return usuario;
 	}
 
@@ -89,7 +96,7 @@ public class UsuarioService {
 			}
 		}
 
-		if (usuarioUpdate.getDataLimiteAtivar().before(Utils.dataAtual())) {
+		if (!ambiente && usuarioUpdate.getDataLimiteAtivar().before(Utils.dataAtual())) {
 			throw new AtivarUsuarioException("Não é possível ativar, data limite expirou.");
 		}
 
@@ -108,7 +115,9 @@ public class UsuarioService {
 		if (!senha.equals(confirmarSenha)) {
 			throw new AtivarUsuarioException("As senhas não conferem");
 		}
-		
+		if (usuario.getSituacao() != SituacaoUsuario.ATIVO.getId()) {
+			throw new AtivarUsuarioException("Usuario inativo.");
+		}
 		usuario.setSenha(passwordEncoder.encode(senha));
 
 		updateData(usuario);
@@ -121,8 +130,8 @@ public class UsuarioService {
 		usuarioUpdate.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuarioUpdate.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuarioUpdate.setSituacao(SituacaoUsuario.SOLICITOU_NOVA_SENHA.getId());
-
-		notificacoesFeignClients.sms(buildNotificacao(usuarioUpdate, Notificacao.ESQUECEU_SENHA));
+		if (!ambiente) 
+			notificacoesFeignClients.sms(buildNotificacao(usuarioUpdate, Notificacao.ESQUECEU_SENHA));
 		return repository.save(usuarioUpdate);
 	}
 
@@ -142,7 +151,8 @@ public class UsuarioService {
 		usuario.setCodigoAtivar(Utils.buildCodigoAtivacao());
 		usuario.setDataLimiteAtivar(Utils.addDiasDataAtual(7));
 		usuario = repository.save(usuario);
-		notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
+		if (!ambiente) 
+			notificacoesFeignClients.sms(buildNotificacao(usuario, Notificacao.NOVO_USUARIO));
 		return usuario;
 	}
 
