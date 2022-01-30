@@ -1,5 +1,5 @@
 server:
-  port: '${PORT:0}'
+  port: '${PORT:8080}'
 eureka:
   client:
     enabled: false
@@ -13,10 +13,8 @@ spring:
     config:
       profile: test
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/41scj_ms_usuarios_test?useTimezone=true&serverTimezone=UTC
-    username: root
-    password: 12345678
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:usertest
   jackson:
     default-property-inclusion: NON_NULL
     serialization:
@@ -27,12 +25,9 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+       dialect: org.hibernate.dialect.HSQLDialect 
   flyway:
-    url: jdbc:mysql://localhost:3306
-    schemas: 41scj_ms_usuarios_test
-    user: root
-    password: 12345678      
+    enabled: false  
 management:
   endpoints:
     web:

@@ -2,53 +2,47 @@ package br.com.fiap.microservices.services.validation;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.flywaydb.test.FlywayTestExecutionListener;
-import org.flywaydb.test.annotation.FlywayTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import br.com.fiap.microservices.FlywayMigrationConfig;
-import br.com.fiap.microservices.GenericControlerITest;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+
 import br.com.fiap.microservices.entities.dto.LoginDTO;
 import br.com.fiap.microservices.entities.dto.RoleDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioNovaSenhaDTO;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)@Import(FlywayMigrationConfig.class) 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, 
-    FlywayTestExecutionListener.class })
-@FlywayTest
-public class UsuarioResourceTest extends GenericControlerITest {
+
+//@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class, SqlScriptsTestExecutionListener.class})
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Sql({ "classpath:/db/integration/V2__Populate_Table_Usuarios_test.sql" })
+public class UsuarioResourceTest  {
 
 	@Test
 	public void deveRetornarTodosUsuarios() {
 		String jsonReturned = given().when().get("/usuarios/").then().extract().asString();
 		// verificar o que o json retorna aqui
 
-		with(jsonReturned).assertThat("$[0].nome", equalTo("Emerson"));
-		with(jsonReturned).assertThat("$[0].sobrenome", equalTo("Dias de Oliveira"));
-		with(jsonReturned).assertThat("$[0].email", equalTo("emersondiaspd@gmail.com"));
-		with(jsonReturned).assertThat("$[0].login", equalTo("11988298946"));
-		with(jsonReturned).assertThat("$[0].telefone", equalTo("11988298946"));
-		with(jsonReturned).assertThat("$[0].situacao", equalTo(2));
+		with(jsonReturned).assertEquals("$[0].nome", "Emerson");
+		with(jsonReturned).assertEquals("$[0].sobrenome","Dias de Oliveira");
+		with(jsonReturned).assertEquals("$[0].email", ("emersondiaspd@gmail.com"));
+		with(jsonReturned).assertEquals("$[0].login", ("11988298946"));
+		with(jsonReturned).assertEquals("$[0].telefone", ("11988298946"));
+		with(jsonReturned).assertEquals("$[0].situacao", (2));
 
 	}
 
@@ -59,12 +53,12 @@ public class UsuarioResourceTest extends GenericControlerITest {
 				.then().extract().asString();
 		// verificar o que o json retorna aqui
 
-		with(jsonReturned).assertThat("nome", equalTo("Emerson"));
-		with(jsonReturned).assertThat("sobrenome", equalTo("Dias de Oliveira"));
-		with(jsonReturned).assertThat("email", equalTo("emersondiaspd@gmail.com"));
-		with(jsonReturned).assertThat("login", equalTo("11988298946"));
-		with(jsonReturned).assertThat("telefone", equalTo("11988298946"));
-		with(jsonReturned).assertThat("situacao", equalTo(2));
+		with(jsonReturned).assertEquals("nome", ("Emerson"));
+		with(jsonReturned).assertEquals("sobrenome", ("Dias de Oliveira"));
+		with(jsonReturned).assertEquals("email", ("emersondiaspd@gmail.com"));
+		with(jsonReturned).assertEquals("login", ("11988298946"));
+		with(jsonReturned).assertEquals("telefone", ("11988298946"));
+		with(jsonReturned).assertEquals("situacao", (2));
 	}
 
 	@Test
@@ -76,16 +70,16 @@ public class UsuarioResourceTest extends GenericControlerITest {
 				"11988298946", "123456", "ROLE_PARCEIROS");
 		String jsonReturned = given().contentType("application/json").body(usuarioAdicionar).when()
 		.post("/usuarios/login/").then().extract().asString();
-		with(jsonReturned).assertThat("nome", equalTo("Emerson"));
-		with(jsonReturned).assertThat("sobrenome", equalTo("Dias de Oliveira"));
-		with(jsonReturned).assertThat("email", equalTo("emersondiaspd@gmail.com"));
-		with(jsonReturned).assertThat("login", equalTo("11988298946"));
-		with(jsonReturned).assertThat("telefone", equalTo("11988298946"));
-		with(jsonReturned).assertThat("situacao", equalTo(2));
+		with(jsonReturned).assertEquals("nome", ("Emerson"));
+		with(jsonReturned).assertEquals("sobrenome", ("Dias de Oliveira"));
+		with(jsonReturned).assertEquals("email", ("emersondiaspd@gmail.com"));
+		with(jsonReturned).assertEquals("login", ("11988298946"));
+		with(jsonReturned).assertEquals("telefone", ("11988298946"));
+		with(jsonReturned).assertEquals("situacao", (2));
 
 	}
 
-	@Test(expected = Test.None.class)
+	@Test()
 	public void deveCriarUmNovoUsuario() {
 		RoleDTO roleDTO = new RoleDTO(1L, "ROLE_PARCEIROS");
 		Set<RoleDTO> roles = new HashSet<RoleDTO>();
@@ -100,7 +94,7 @@ public class UsuarioResourceTest extends GenericControlerITest {
 	
 	}
 	
-	@Test(expected = Test.None.class)
+	@Test()
 	public void deveAtualizarUsuario() { 
 		RoleDTO roleDTO = new RoleDTO(1L, "ROLE_PARCEIROS");
 		Set<RoleDTO> roles = new HashSet<RoleDTO>();
@@ -110,7 +104,7 @@ public class UsuarioResourceTest extends GenericControlerITest {
 		.put("/usuarios/2").then().extract().asString();
 	}
 	
-	@Test(expected = Test.None.class)
+	@Test()
 	public void deveReenviarCodigoAtivacao() {
 		String jsonReturned = given().contentType("application/json").when()
 				.post("/usuarios/reenviar-codigo/2").then().extract().asString();
@@ -122,13 +116,8 @@ public class UsuarioResourceTest extends GenericControlerITest {
 		UsuarioAtivarDTO usuarioAtivarDTO = new UsuarioAtivarDTO("12345678901", "1234",1 );
 		String jsonReturned = given().contentType("application/json").body(usuarioAtivarDTO).when()
 		.post("/usuarios/ativar").then().extract().asString();
-		with(jsonReturned).assertThat("situacao", equalTo(2));
+		with(jsonReturned).assertEquals("situacao", (2));
 	}
-	//teste pendente!!!
-//	@Test
-//	public void deveReiniciarSenhaUsuario() {
-//		UsuarioNovaSenhaDTO usuarioNovaSenhaDTO = new UsuarioNovaSenhaDTO()
-//	}
-	
+
 
 }
