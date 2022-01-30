@@ -1,1 +1,0 @@
-DROP DATABASE `41scj_ms_usuarios_test`;
