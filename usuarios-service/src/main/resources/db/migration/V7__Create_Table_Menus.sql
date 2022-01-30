@@ -1,8 +1,0 @@
-﻿CREATE TABLE `menus` (
-  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `nome` VARCHAR(40) NOT NULL,
-  `descricao`VARCHAR(600) NOT NULL,
-  `icone` VARCHAR(120) NOT NULL,
-  `rota` VARCHAR(220) NOT NULL,
-  `ordem` INT NOT NULL 
-) 

@@ -1,4 +1,0 @@
-﻿CREATE TABLE `roles` (
-  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `nome` VARCHAR(40) NOT NULL
-) 
