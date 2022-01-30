@@ -1,4 +1,1 @@
-﻿CREATE TABLE `roles` (
-  `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
-  `nome` VARCHAR(40) NOT NULL
-) 
+CREATE TABLE roles ( id bigint IDENTITY primary key, nome varchar(40) not null );
