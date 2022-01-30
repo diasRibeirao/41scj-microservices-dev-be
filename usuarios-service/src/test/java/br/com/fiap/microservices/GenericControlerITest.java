@@ -4,7 +4,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 
 import io.restassured.RestAssured;
 
-public abstract class GenericControlerITest {
+public abstract class x {
 
 	@LocalServerPort
 	private int randomPort;

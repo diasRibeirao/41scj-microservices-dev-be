@@ -1,4 +1,4 @@
-package br.com.fiap.microservices.services.validation;
+package br.com.fiap.microservices.resources;
 
 import static com.jayway.jsonassert.JsonAssert.with;
 import static io.restassured.RestAssured.given;
@@ -9,33 +9,36 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.flywaydb.test.FlywayTestExecutionListener;
-import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import br.com.fiap.microservices.FlywayMigrationConfig;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
+
 import br.com.fiap.microservices.GenericControlerITest;
 import br.com.fiap.microservices.entities.dto.LoginDTO;
 import br.com.fiap.microservices.entities.dto.RoleDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioNovaSenhaDTO;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)@Import(FlywayMigrationConfig.class) 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, 
-    FlywayTestExecutionListener.class })
-@FlywayTest
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class})
+@Sql({ "/db/integration/V2__Populate_Table_Usuarios_test.sql" })
+//@Sql("/db/integration/V2__Populate_Table_Usuarios_test.sql")
+//@Sql("/db/integration/V3__Create_Table_Roles_test.sql.sql")
+//@Sql("/db/integration/V4__Populate_Table_Roles_test.sql")
+//@Sql("/db/integration/V5__Create_Table_Usuarios_Role_test.sql")
+//@Sql("/db/integration/V6__Populate_Table_Usuarios_Role_test.sql")
+//@Sql("/db/integration/V7__Create_Table_Menus_test.sql")
+//@Sql("/db/integration/V8__Populate_Table_Menus_test.sql")
+//@Sql("/db/integration/V9__Create_Table_Menus_Role_test.sql")
+//@Sql("/db/integration/V10__Populate_Table_Menus_Role_test.sql")
 public class UsuarioResourceTest extends GenericControlerITest {
 
 	@Test
@@ -124,11 +127,6 @@ public class UsuarioResourceTest extends GenericControlerITest {
 		.post("/usuarios/ativar").then().extract().asString();
 		with(jsonReturned).assertThat("situacao", equalTo(2));
 	}
-	//teste pendente!!!
-//	@Test
-//	public void deveReiniciarSenhaUsuario() {
-//		UsuarioNovaSenhaDTO usuarioNovaSenhaDTO = new UsuarioNovaSenhaDTO()
-//	}
-	
+
 
 }
