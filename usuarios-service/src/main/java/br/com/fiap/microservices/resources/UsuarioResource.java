@@ -1,6 +1,5 @@
 package br.com.fiap.microservices.resources;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,18 +14,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.fiap.microservices.entities.Usuario;
 import br.com.fiap.microservices.entities.dto.LoginDTO;
-import br.com.fiap.microservices.entities.dto.UsuarioNovaSenhaDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAdicionarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtivarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioDTO;
 import br.com.fiap.microservices.entities.dto.UsuarioEsqueceuSenhaDTO;
+import br.com.fiap.microservices.entities.dto.UsuarioNovaSenhaDTO;
 import br.com.fiap.microservices.entities.dto.converter.UsuarioConverter;
 import br.com.fiap.microservices.services.UsuarioService;
+import br.com.fiap.microservices.utils.Utils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -59,18 +58,17 @@ public class UsuarioResource {
 	@Operation(summary = "Busca um usuário pelo seu Login")
 	@PostMapping(value = "/login")
 	public ResponseEntity<UsuarioDTO> findByLogin(@Valid @RequestBody LoginDTO loginDTO) {
-		UsuarioDTO obj = converter.Parse(usuarioService.validarLogin(loginDTO.getLogin(), loginDTO.getSenha(), loginDTO.getRole()));
+		UsuarioDTO obj = converter.Parse(usuarioService.validarLogin(Utils.removeMaskCelular(loginDTO.getLogin()), loginDTO.getSenha(), loginDTO.getRole()));
 		return ResponseEntity.ok(obj);
 	}
 
 	@Operation(summary = "Cadastrar um novo usuário")
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioAdicionarDTO usuarioAdicionarDTO) {
+	public ResponseEntity<UsuarioDTO> insert(@Valid @RequestBody UsuarioAdicionarDTO usuarioAdicionarDTO) {
 		Usuario usuario = converter.ParseAdicionarDTO(usuarioAdicionarDTO);
 		usuario = usuarioService.insert(usuario);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId())
-				.toUri();
-		return ResponseEntity.created(uri).build();
+		UsuarioDTO obj = converter.Parse(usuario);
+		return ResponseEntity.ok(obj);
 	}
 
 	@Operation(summary = "Atualizar um usuário")
@@ -93,7 +91,7 @@ public class UsuarioResource {
 	@Operation(summary = "Ativar um novo usuário")
 	@PostMapping(value = "/ativar")
 	public ResponseEntity<UsuarioDTO> ativar(@Valid @RequestBody UsuarioAtivarDTO usuarioAtivarDTO) {
-		UsuarioDTO obj = converter.Parse(usuarioService.ativar(usuarioAtivarDTO));;
+		UsuarioDTO obj = converter.Parse(usuarioService.ativar(usuarioAtivarDTO));
 		return ResponseEntity.ok(obj);
 	}
 	

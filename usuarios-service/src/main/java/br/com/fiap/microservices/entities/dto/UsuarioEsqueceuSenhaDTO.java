@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class UsuarioEsqueceuSenhaDTO {
 
-	@Size(min = 10, max = 11, message = "O telefone deve possuir {max} caracteres")
+	@Size(min = 15, max = 15, message = "O telefone deve possuir {max} caracteres")
 	private String telefone;
 
 }

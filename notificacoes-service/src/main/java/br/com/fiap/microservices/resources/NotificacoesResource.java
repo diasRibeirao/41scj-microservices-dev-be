@@ -15,6 +15,7 @@ import br.com.fiap.microservices.entities.dto.NotificacaoSendDTO;
 import br.com.fiap.microservices.entities.dto.converter.NotificacaoConverter;
 import br.com.fiap.microservices.mq.SMSQueueSender;
 import br.com.fiap.microservices.services.NotificacoesService;
+import br.com.fiap.microservices.services.SlackService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -26,6 +27,9 @@ public class NotificacoesResource {
 
 	@Autowired
 	private NotificacoesService notificacoesService;
+
+	@Autowired
+	private SlackService slackService;
 
 	@Autowired
 	private NotificacaoConverter converter;
@@ -42,4 +46,17 @@ public class NotificacoesResource {
 		return ResponseEntity.ok(notificacao);
 	}
 
+	@Operation(summary = "Enviar mensagem para SLACK")
+	@PostMapping(value = "/slack")
+	public ResponseEntity<Void> slack(@RequestBody String mensagem) {
+		slackService.send(mensagem);
+		return ResponseEntity.noContent().build();
+	}
+
+	@Operation(summary = "Teste")
+	@PostMapping(value = "/teste2")
+	public ResponseEntity<Void> teste2() {
+		System.out.println("teste >>>>>>>>>>>>>>>>>>>>>>>>>");
+		return ResponseEntity.noContent().build();
+	}
 }
