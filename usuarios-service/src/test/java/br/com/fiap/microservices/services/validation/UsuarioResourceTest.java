@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -29,7 +30,10 @@ import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class, SqlScriptsTestExecutionListener.class})
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Sql({ "classpath:/db/integration/V2__Populate_Table_Usuarios_test.sql" })
+@Sql( "classpath:/db/integration/V1_Create_Table_Usuarios_test.sql" )
+@Sql( scripts = "classpath:/db/integration/V2__Populate_Table_Usuarios_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+
+@Sql( scripts = "classpath:/db/integration/zerar-banco.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 public class UsuarioResourceTest  {
 
 	@Test
