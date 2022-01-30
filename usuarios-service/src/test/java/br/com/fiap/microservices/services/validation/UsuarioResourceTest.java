@@ -32,7 +32,14 @@ import br.com.fiap.microservices.entities.dto.UsuarioAtualizarDTO;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @Sql( "classpath:/db/integration/V1_Create_Table_Usuarios_test.sql" )
 @Sql( scripts = "classpath:/db/integration/V2__Populate_Table_Usuarios_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-
+@Sql( scripts = "classpath:/db/integration/V3__Create_Table_Roles_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V4__Populate_Table_Roles_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V5__Create_Table_Usuarios_Role_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V6__Populate_Table_Usuarios_Role_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V7__Create_Table_Menus_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V8__Populate_Table_Menus_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V9__Create_Table_Menus_Role_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql( scripts = "classpath:/db/integration/V10__Populate_Table_Menus_Role_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql( scripts = "classpath:/db/integration/zerar-banco.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 public class UsuarioResourceTest  {
 
@@ -71,7 +78,7 @@ public class UsuarioResourceTest  {
 		Set<RoleDTO> roles = new HashSet<RoleDTO>();
 		roles.add(roleDTO);
 		LoginDTO usuarioAdicionar = new LoginDTO(
-				"11988298946", "123456", "ROLE_PARCEIROS");
+				"11988298946", "123456", "ROLE_PAIS_RESPONSAVEIS");
 		String jsonReturned = given().contentType("application/json").body(usuarioAdicionar).when()
 		.post("/usuarios/login/").then().extract().asString();
 		with(jsonReturned).assertEquals("nome", ("Emerson"));
