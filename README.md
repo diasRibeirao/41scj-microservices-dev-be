@@ -68,14 +68,16 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-man
 <br /><br />
 
 ### Alterar nas classe SlackService na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/services/
-@Value("${slack.bot.token}") = Alterar para o seu token no slack
+        
+	@Value("${slack.bot.token}") = Alterar para o seu token no slack
 <br />
    
         @Value("${slack.bot.channel}") = Alterar para o seu canal no slack
 <br /><br />
 
 ### Alterar nas classe TwilioService na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/services/
-@Value("${twilio.account.sid}") = Alterar para o seu id no twilio
+       
+       @Value("${twilio.account.sid}") = Alterar para o seu id no twilio
 <br />
 	
 	@Value("${twilio.auth.token}") = Alterar para o seu token no twilio
