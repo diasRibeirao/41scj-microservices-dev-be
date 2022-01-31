@@ -49,7 +49,7 @@ Utilizamos nesse projeto o swagger para a criaçao da documentacao<br />
 
 ## Como executar o sistema
 
-### Primeiro criar uma imagem no docker do RAbbitMQ, com segue:
+### Primeiro criar uma imagem no docker do RabbitMQ, com segue:
 
 docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
 
