@@ -58,17 +58,20 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-man
 ## Você pode ter as alterações abaixo em um respositório privado para não ficar exposto as configurações, ou se preferir alterar diretamente nos arquivos como abaixo:
 
 ### Alterar nas classe RabbitMQSenderConfig na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/configuracao/
-@Value("${queue.sms.name}") = Alterar aqui para sua queue
+        
+	@Value("${queue.sms.name}") = Alterar aqui para sua queue
 <br /><br />
 
 ### Alterar nas classe SMSQueueConsumer na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/mq/
-@Value("${queue.sms.name}") = Alterar aqui para sua queue
+        
+	@Value("${queue.sms.name}") = Alterar aqui para sua queue
 <br /><br />
 
 ### Alterar nas classe SlackService na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/services/
 @Value("${slack.bot.token}") = Alterar para o seu token no slack
 <br />
-@Value("${slack.bot.channel}") = Alterar para o seu canal no slack
+   
+        @Value("${slack.bot.channel}") = Alterar para o seu canal no slack
 <br /><br />
 
 ### Alterar nas classe TwilioService na package: 41scj-microservices-dev-be/notificacoes-service/src/main/java/br/com/fiap/microservices/services/
@@ -80,7 +83,7 @@ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-man
 	
 	@Value("${twilio.account.phone}") = Alterar para o seu phone no twilio
 <br />
-<br /><br />
+<br />
 
 ## FEITO AS ALTERAÇÕES ACIMA
 Na sua IDE de preferência, executar cada projeto/serviço "Run As -> Spring Boot App"
