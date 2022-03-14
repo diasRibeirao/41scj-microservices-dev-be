@@ -1,5 +1,7 @@
 server:
-  port: '${PORT:0}'
+  port: 8083 #'${PORT:0}'
+  forward-headers-strategy: framework
+  
 eureka:
   instance:
     instance-id: >-
@@ -10,39 +12,44 @@ eureka:
 spring:
   application:
     name: usuarios-service
-  profiles: #config local    active:    - native
+  profiles:     active:    - default
   config:
     import: optional:configserver:http://localhost:8888/
   cloud:
     config:
       profile: test
+      
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/41scj_ms_usuarios?useTimezone=true&serverTimezone=UTC
     username: root
     password: asd123qwe!
+    
   jackson:
     default-property-inclusion: NON_NULL
     serialization:
       fail-on-empty-beans: false
+      
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        
   flyway:
-    url: jdbc:mysql://localhost:3306
-    schemas: 41scj_ms_usuarios
+    url: jdbc:mysql://localhost:3306/41scj_ms_usuarios?useTimezone=true&serverTimezone=UTC
     user: root
     password: asd123qwe!      
+    
 management:
   endpoints:
     web:
       exposure:
         include:
         - '*' 
+        
 springdoc:
   #show-actuator: true
   api-docs:
