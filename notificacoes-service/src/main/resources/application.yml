@@ -1,5 +1,7 @@
 server:
-  port: '${PORT:0}'
+  port: 8082 #'${PORT:0}'
+  forward-headers-strategy: framework
+  
 eureka:
   instance:
     instance-id: >-
@@ -7,6 +9,7 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka 
+      
 spring:
   application:
     name: notificacoes-service
@@ -14,16 +17,18 @@ spring:
     import: optional:configserver:http://localhost:8888/
   cloud:
     config:
-      profile: test
+      profile: default
   rabbitmq:    host: localhost
     port: 5672
     username: guest
     password: guest
+    
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/41scj_ms_notificacoes?useTimezone=true&serverTimezone=UTC
     username: root
     password: asd123qwe!
+    
   jackson:
     default-property-inclusion: NON_NULL
     serialization:
@@ -34,18 +39,20 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        
   flyway:
-    url: jdbc:mysql://localhost:3306
-    schemas: 41scj_ms_notificacoes
+    url: jdbc:mysql://localhost:3306/41scj_ms_notificacoes?useTimezone=true&serverTimezone=UTC
     user: root
-    password: asd123qwe!      
+    password: asd123qwe!
+    
 management:
   endpoints:
     web:
       exposure:
         include:
         - '*' 
+        
 springdoc:
   #show-actuator: true
   api-docs:

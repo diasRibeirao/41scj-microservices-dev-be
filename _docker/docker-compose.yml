@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+    
+  db-mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=asd123qwe!
+    entrypoint:
+      sh -c "
+        echo 'CREATE DATABASE IF NOT EXISTS 41scj_ms_usuarios; CREATE DATABASE IF NOT EXISTS 41scj_ms_notificacoes;' > /docker-entrypoint-initdb.d/init.sql;
+        /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      "
+    ports:
+      - 3306:3306
+    networks:
+      - 41scj-microservices
+      
+  rabbitmq3:
+    image: rabbitmq:3.9-management
+    environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+        # AMQP protocol port
+        - '5672:5672'
+        # HTTP management UI
+        - '15672:15672'
+    networks:
+      - 41scj-microservices
+      
+      
+networks:
+  41scj-microservices:
+    driver: bridge      
+      
+  
+      
+    
