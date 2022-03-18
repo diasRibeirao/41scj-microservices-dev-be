@@ -21,7 +21,9 @@ services:
     environment:
       - TZ=America/Sao_Paulo
       - MYSQL_ROOT_PASSWORD=asd123qwe!
-   ports:
+    entrypoint:
+      sh -c "echo 'CREATE DATABASE IF NOT EXISTS 41scj_ms_usuarios; CREATE DATABASE IF NOT EXISTS 41scj_ms_notificacoes;' > /docker-entrypoint-initdb.d/init.sql; /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci"
+    ports:
       - 3306:3306
     networks:
       - 41scj-microservices
@@ -109,8 +111,5 @@ services:
       
 networks:
   41scj-microservices:
-    driver: bridge      
-      
-  
-      
-    
+    driver: bridge     
+        
