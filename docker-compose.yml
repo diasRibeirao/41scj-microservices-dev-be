@@ -3,6 +3,11 @@ version: '3.8'
 services:
       
   rabbit-mq:
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: rabbitmq:3.9-management
     environment:
         - RABBITMQ_DEFAULT_USER=guest
@@ -16,6 +21,11 @@ services:
       - 41scj-microservices
       
   db-mysql:
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -29,6 +39,11 @@ services:
       - 41scj-microservices
             
   eureka-server:
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: emersondiaspd/eureka-server:0.0.1-SNAPSHOT
     ports:
       - 8761:8761
@@ -36,6 +51,11 @@ services:
       - 41scj-microservices
       
   config-server:
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: emersondiaspd/config-server:0.0.1-SNAPSHOT
     ports:
       - 8888:8888
@@ -43,6 +63,11 @@ services:
       - 41scj-microservices
       
   api-gateway:
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: emersondiaspd/api-gateway:0.0.1-SNAPSHOT
     ports:
       - 8765:8765
@@ -54,6 +79,11 @@ services:
       - 41scj-microservices
       
   notificacoes-service:
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: emersondiaspd/notificacoes-service
     restart: always
     build:
@@ -82,6 +112,11 @@ services:
       - 41scj-microservices
       
   usuarios-service:
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
     image: emersondiaspd/usuarios-service
     restart: always
     build:
