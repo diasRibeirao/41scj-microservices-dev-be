@@ -29,10 +29,6 @@ jobs:
         working-directory: ./api-gateway
         run: mvn spring-boot:build-image -DskipTests
       
-      - name: Build Config Server Container Image
-        working-directory: ./config-server
-        run: mvn spring-boot:build-image -DskipTests
-        
       - name: Build Usuario Service Jar
         working-directory: ./usuarios-service
         run: mvn clean package -DskipTests
