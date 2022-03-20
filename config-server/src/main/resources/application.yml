@@ -7,31 +7,31 @@ eureka:
       ${spring.application.name}:${spring.application.instance_id:${random.value}}
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka 
+      defaultZone: http://192.168.15.200:8761/eureka 
       
 # Configurações para acessar o File Systems
-spring:
-  application:
-    name: config-server
-  profiles:
-    active: native
-  cloud:
-    config:
-      server:
-        native:
-          search-locations: classpath:/microservices-configs
-          
-# Configurações para acessar um repositório na nuvem (GitHub)
 #spring:
 #  application:
 #    name: config-server
+#  profiles: 
+#    active: native
 #  cloud:
 #    config:
 #      server:
-#        git:
-#          uri: https://github.com/diasRibeirao/41scj-microservices-dev-configs
-#          username: ${GITHUB_USER}
-#          password: ${GITHUB_TOKEN}
-#          default-label: master
-#          search-paths:
-#          - '*-service'
+#        native:
+#          search-locations: classpath:/microservices-configs
+          
+# Configurações para acessar um repositório na nuvem (GitHub)
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/diasRibeirao/41scj-microservices-dev-configs
+          username: ${GITHUB_USER}
+          password: ${GITHUB_TOKEN}
+          default-label: master
+          search-paths:
+          - '*-service'
