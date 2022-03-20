@@ -73,7 +73,7 @@ services:
       - 8765:8765
     depends_on:
       - eureka-server
-    #environment:
+    environment:
       EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
       #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
     networks:
