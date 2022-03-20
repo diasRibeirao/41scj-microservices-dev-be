@@ -75,7 +75,9 @@ services:
       - eureka-server
     environment:
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_SERVER_ADDRESS: http://eureka-server:8761/eureka
+      EUREKA_DEFAULT_ZONE: http://rd-service:8763/eureka
+      REGISTER_WITH_EUREKA: true
+      FETCH_REGISTRY: true
     networks:
       - 41scj-microservices
       
@@ -94,7 +96,9 @@ services:
       TZ: America/Sao_Paulo
       SPRING.CONFIG.IMPORT: optional:configserver:http://config-server:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_SERVER_ADDRESS: =http://eureka-server:8761/eureka
+      EUREKA_DEFAULT_ZONE: http://rd-service:8763/eureka
+      REGISTER_WITH_EUREKA: true
+      FETCH_REGISTRY: true
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING.DATASOURCE.URL: jdbc:mysql://db-mysql:3306/41scj_ms_notificacoes?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
@@ -128,7 +132,9 @@ services:
       TZ: America/Sao_Paulo
       SPRING.CONFIG.IMPORT: optional:configserver:http://config-server:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_SERVER_ADDRESS: http://eureka-server:8761/eureka
+      EUREKA_DEFAULT_ZONE: http://rd-service:8763/eureka
+      REGISTER_WITH_EUREKA: true
+      FETCH_REGISTRY: true
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING.DATASOURCE.URL: jdbc:mysql://db-mysql:3306/41scj_ms_usuarios?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
