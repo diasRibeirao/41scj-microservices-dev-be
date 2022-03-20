@@ -45,8 +45,8 @@ spring:
       server:
         git:
           uri: https://github.com/diasRibeirao/41scj-microservices-dev-configs
-          username: ${GITHUB_USER}
-          password: ${GITHUB_TOKEN}
+          username: ${{ secrets.REPOGITHUB_USER }}
+          password: ${{ secrets.REPOGITHUB_TOKEN }}
           default-label: master
           search-paths:
           - '*-service'
