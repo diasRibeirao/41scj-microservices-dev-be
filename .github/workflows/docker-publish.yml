@@ -27,15 +27,15 @@ jobs:
         
       - name: Build API Gateway Container Image
         working-directory: ./api-gateway
-        run: mvn spring-boot:build-image -DskipTestss
+        run: mvn spring-boot:build-image -DskipTests
         
       - name: Build Usuario Service Jar
         working-directory: ./usuarios-service
-        run: mvn clean package -DskipTestss
+        run: mvn clean package -DskipTests
       
       - name: Build Notificacoes Service Jar
         working-directory: ./notificacoes-service
-        run: mvn clean package -DskipTestss
+        run: mvn clean package -DskipTests
       
       - name: Docker Compose Build
         working-directory: ./
