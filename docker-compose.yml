@@ -1,7 +1,18 @@
 version: '3.8'
 
 services:
-      
+  
+  visualizador:
+    image: dockersamples/visualizer
+    volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+    - 8080:8080
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+          
   rabbit-mq:
     deploy:
       replicas: 1
@@ -73,9 +84,9 @@ services:
       - 8765:8765
     depends_on:
       - eureka-server
-    environment:
+    #environment:
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
+      #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
     networks:
       - 41scj-microservices
       
@@ -92,9 +103,9 @@ services:
       dockerfile: notificacoes-service/Dockerfile
     environment:
       TZ: America/Sao_Paulo
-      SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
+      #SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
+      #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING.DATASOURCE.URL: jdbc:mysql://db-mysql:3306/41scj_ms_notificacoes?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
@@ -126,9 +137,9 @@ services:
       dockerfile: usuarios-service/Dockerfile
     environment:
       TZ: America/Sao_Paulo
-      SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
+      #SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
+      #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
       RABBIT_URI: amqp://guest:guest@rabbit-mq:5672
       SPRING_RABBITMQ_HOST: rabbit-mq
       SPRING.DATASOURCE.URL: jdbc:mysql://db-mysql:3306/41scj_ms_usuarios?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
