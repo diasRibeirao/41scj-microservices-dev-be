@@ -1,18 +1,18 @@
 server:
   port: 8765
 
-eureka:
-  instance:
-    instance-id: >-
-      ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#eureka:
+#  instance:
+#    instance-id: >-
+#      ${spring.application.name}:${spring.application.instance_id:${random.value}}
 #    leaseRenewalIntervalInSeconds: 1
-  client:
-    service-url:
-      defaultZone: http://192.168.15.200:8761/eureka
+#  client:
+#    service-url:
+#      defaultZone: http://192.168.15.200:8761/eureka
        
 spring:
   application:
-    name: api-gateway
+    name: API-GATEWAY
 #  config:
 #    import: optional:configserver:http://192.168.15.200:8888/
   cloud:  
@@ -29,17 +29,27 @@ spring:
               allowedMethods: "*"
               allowedHeaders: "*"
       routes:
-      - id: usuarios-service
-        uri: lb://usuarios-service
+      - id: USUARIOS-SERVICE
+        uri: lb://USUARIOS-SERVICE
         predicates:
         - Path=/usuarios/**
-      - id: notificacoes-service
-        uri: lb://notificacoes-service
+      - id: NOTIFICACOES-SERVICE
+        uri: lb://NOTIFICACOES-SERVICE
         predicates:
         - Path=/notificacoes/**
       - id: openapi
-        uri: lb://api-gateway
+        uri: lb://API-GATEWAY
         predicates:
         - Path=/v3/api-docs/**
         filters:
         - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+        
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: eureka-0
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-0.eureka.default.svc.cluster.local:8761/eureka        

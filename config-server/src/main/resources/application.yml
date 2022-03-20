@@ -1,13 +1,13 @@
 server:
   port: 8888
 
-eureka:
-  instance:
-    instance-id: >-
-      ${spring.application.name}:${spring.application.instance_id:${random.value}}
-  client:
-    service-url:
-      defaultZone: http://192.168.15.200:8761/eureka 
+#eureka:
+#  instance:
+#    instance-id: >-
+#      ${spring.application.name}:${spring.application.instance_id:${random.value}}
+#  client:
+#    service-url:
+#      defaultZone: http://192.168.15.200:8761/eureka 
       
 # Configurações para acessar o File Systems
 #spring:
@@ -24,7 +24,7 @@ eureka:
 # Configurações para acessar um repositório na nuvem (GitHub)
 spring:
   application:
-    name: config-server
+    name: CONFIG-SERVER
   cloud:
     config:
       server:
@@ -35,3 +35,14 @@ spring:
           default-label: master
           search-paths:
           - '*-service'
+          clone-on-start: true
+          
+eureka:
+  instance:
+    preferIpAddress: true
+    hostname: eureka-0
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://eureka-0.eureka.default.svc.cluster.local:8761/eureka          
