@@ -72,8 +72,8 @@ services:
       - 8888:8888
     depends_on:
       - eureka-server
-    environment:
-      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka
+ #   environment:
+ #     EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka
     networks:
       - 41scj-microservices
       
