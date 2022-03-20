@@ -22,8 +22,6 @@ eureka:
     # enable to register multiple app instances with a random server port
     instance-id: >-
       ${spring.application.name}:${spring.application.instance_id:${random.value}}
-    leaseRenewalIntervalInSeconds: ${LEASE_RENEWAL_INTERVAl_IN_SECONDS:10}
-    leaseExpirationDurationInSeconds: ${LEASE_EXPIRATION_DURATIONIN_SECONDS:20}
     
 spring:
   application:
