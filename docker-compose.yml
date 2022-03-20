@@ -151,6 +151,7 @@ services:
       
 networks:
   41scj-microservices:
-    external: true
+    #external: true
+    driver: bridge 
 
         
