@@ -74,8 +74,7 @@ services:
     depends_on:
       - eureka-server
     environment:
-      EUREKA.CLIENT.SERVICE_URL.
-      : http://eureka-server:8761/eureka
+      EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
     networks:
       - 41scj-microservices
       
