@@ -41,6 +41,17 @@ jobs:
         working-directory: ./
         run: docker-compose build
         
+      - name: Push to Docker Hub Container Registry
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/usuarios-service:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/usuario-service:${{ github.run_id }}
+          docker tag ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:${{ github.run_id }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/eureka-server
+          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway
+          docker push ${{ secrets.DOCKER_USERNAME }}/usuarios-service
+          docker push ${{ secrets.DOCKER_USERNAME }}/notificacoes-service
+        
         
         
         
