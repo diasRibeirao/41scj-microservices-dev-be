@@ -23,7 +23,7 @@ jobs:
           
       - name: Build Eureka Server Container Image
         working-directory: ./eureka-server
-        run: mvn spring-boot:build-image -DskipTestss
+        run: mvn spring-boot:build-image -DskipTests
         
       - name: Build API Gateway Container Image
         working-directory: ./api-gateway
@@ -43,20 +43,14 @@ jobs:
         
       - name: Push to Docker Hub Container Registry
         run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/usuarios-service:latest ${{ secrets.DOCKER_USERNAME }}/usuario-service:${{ github.run_id }}
-          docker tag ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:latest ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:${{ github.run_id }}
-          docker tag ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/eureka-server:${{ github.run_id }}
-          docker tag ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/eureka-server:latest
-          docker tag ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{ github.run_id }}
-          docker tag ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/usuarios-service:${{github.run_id}}
-          docker push ${{ secrets.DOCKER_USERNAME }}/usuarios-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:${{github.run_id}}          
-          docker push ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/eureka-server:${{github.run_id}}
-          docker push ${{ secrets.DOCKER_USERNAME }}/eureka-server:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:${{github.run_id}}
-          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/usuarios-service:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/usuario-service:0.0.1-SNAPSHOT
+          docker tag ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT
+          docker tag ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT
+          docker tag ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT
+          docker push ${{ secrets.DOCKER_USERNAME }}/usuarios-service:0.0.1-SNAPSHOT
+          docker push ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT
+          docker push ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT
+          docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT
         
         
         
