@@ -84,7 +84,8 @@ services:
       - 8765:8765
     depends_on:
       - eureka-server
-    #environment:
+    environment:
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
       #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
     networks:
@@ -103,6 +104,7 @@ services:
       dockerfile: notificacoes-service/Dockerfile
     environment:
       TZ: America/Sao_Paulo
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka
       #SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
       #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
@@ -137,6 +139,7 @@ services:
       dockerfile: usuarios-service/Dockerfile
     environment:
       TZ: America/Sao_Paulo
+      EUREKA_DEFAULT_ZONE: http://eureka-server:8761/eureka
       #SPRING.CONFIG.IMPORT: optional:configserver:http://100.25.204.253:8888/
       #EUREKA.CLIENT.SERVICE_URL.DEFAULTZONE: http://eureka-server:8761/eureka
       #EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://100.25.204.253:8761/eureka
