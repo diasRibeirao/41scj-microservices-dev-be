@@ -28,6 +28,10 @@ jobs:
       - name: Build API Gateway Container Image
         working-directory: ./api-gateway
         run: mvn spring-boot:build-image -DskipTests
+      
+      - name: Build Config Server Container Image
+        working-directory: ./config-server
+        run: mvn spring-boot:build-image -DskipTests
         
       - name: Build Usuario Service Jar
         working-directory: ./usuarios-service
@@ -47,10 +51,12 @@ jobs:
           docker tag ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT
           docker tag ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT
           docker tag ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT
+          docker tag ${{ secrets.DOCKER_USERNAME }}/config-server:0.0.1-SNAPSHOT ${{ secrets.DOCKER_USERNAME }}/config-server:0.0.1-SNAPSHOT
           docker push ${{ secrets.DOCKER_USERNAME }}/usuarios-service:0.0.1-SNAPSHOT
           docker push ${{ secrets.DOCKER_USERNAME }}/notificacoes-service:0.0.1-SNAPSHOT
           docker push ${{ secrets.DOCKER_USERNAME }}/eureka-server:0.0.1-SNAPSHOT
           docker push ${{ secrets.DOCKER_USERNAME }}/api-gateway:0.0.1-SNAPSHOT
+          docker push ${{ secrets.DOCKER_USERNAME }}/config-server:0.0.1-SNAPSHOT
         
         
         
