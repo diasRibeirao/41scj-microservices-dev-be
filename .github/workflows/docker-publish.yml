@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '16'
-          distribution: 'adobt'
+          distribution: 'adopt'
           
       - name: Build Eureka Server Container Image
         working-directory: ./eureka-server
