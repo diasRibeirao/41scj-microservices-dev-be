@@ -1,20 +1,41 @@
 server:
-  port: 8765
+  port: ${PORT:8765}
+
+eureka:
+  client:
+    registerWithEureka: ${REGISTER_WITH_EUREKA:true}
+    fetchRegistry: ${FETCH_REGISTRY:true}
+    service-url:
+      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
+  instance:
+    hostname: ${HOST_NAME:${spring.application.name}}  # work on swarm
+    preferIpAddress: ${PREFER_IP_ADDRESS:false}
+    # enable to register multiple app instances with a random server port
+    instance-id: >-
+      ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    leaseRenewalIntervalInSeconds: ${LEASE_RENEWAL_INTERVAl_IN_SECONDS:10}
+    leaseExpirationDurationInSeconds: ${LEASE_EXPIRATION_DURATIONIN_SECONDS:20}
 
 #eureka:
+#  client:
+#    registerWithEureka: ${REGISTER_WITH_EUREKA:true}
+#    fetchRegistry: ${FETCH_REGISTRY:false}
+#    service-url:
+#      defaultZone: ${EUREKA_DEFAULT_ZONE:http://localhost:8761/eureka/}
 #  instance:
+#    hostname: ${HOST_NAME:${spring.application.name}}  # work on swarm
+#    preferIpAddress: ${PREFER_IP_ADDRESS:false}
+#    # enable to register multiple app instances with a random server port
 #    instance-id: >-
 #      ${spring.application.name}:${spring.application.instance_id:${random.value}}
-#    leaseRenewalIntervalInSeconds: 1
-#  client:
-#    service-url:
-#      defaultZone: http://192.168.15.200:8761/eureka
+#    leaseRenewalIntervalInSeconds: ${LEASE_RENEWAL_INTERVAl_IN_SECONDS:10}
+#    leaseExpirationDurationInSeconds: ${LEASE_EXPIRATION_DURATIONIN_SECONDS:20}
        
 spring:
   application:
-    name: API-GATEWAY
+    name: api-gateway
 #  config:
-#    import: optional:configserver:http://192.168.15.200:8888/
+#    import: optional:configserver:http://localhost:8888/
   cloud:  
     gateway:
       discovery:
@@ -29,27 +50,18 @@ spring:
               allowedMethods: "*"
               allowedHeaders: "*"
       routes:
-      - id: USUARIOS-SERVICE
-        uri: lb://USUARIOS-SERVICE
+      - id: usuarios-service
+        uri: lb://usuarios-service
         predicates:
         - Path=/usuarios/**
-      - id: NOTIFICACOES-SERVICE
-        uri: lb://NOTIFICACOES-SERVICE
+      - id: notificacoes-service
+        uri: lb://notificacoes-service
         predicates:
         - Path=/notificacoes/**
       - id: openapi
-        uri: lb://API-GATEWAY
+        uri: lb://api-gateway
         predicates:
         - Path=/v3/api-docs/**
         filters:
         - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
-        
-eureka:
-  instance:
-    preferIpAddress: true
-    hostname: eureka-0
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: http://${EUREKA_HOST:localhost}:${EUREKA_PORT:${eureka.server.port}}/eureka/     
+
