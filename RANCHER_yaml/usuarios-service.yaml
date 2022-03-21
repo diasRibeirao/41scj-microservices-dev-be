@@ -1,0 +1,228 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "4"
+    field.cattle.io/publicEndpoints: '[{"addresses":["10.1.1.145"],"port":32600,"protocol":"TCP","serviceName":"default:usuarios-service-nodeport","allNodes":true}]'
+  creationTimestamp: "2022-03-19T20:59:40Z"
+  generation: 5
+  labels:
+    workload.user.cattle.io/workloadselector: apps.deployment-default-usuarios-service
+  managedFields:
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:field.cattle.io/publicEndpoints: {}
+        f:labels:
+          .: {}
+          f:workload.user.cattle.io/workloadselector: {}
+      f:spec:
+        f:progressDeadlineSeconds: {}
+        f:replicas: {}
+        f:revisionHistoryLimit: {}
+        f:selector: {}
+        f:strategy:
+          f:rollingUpdate:
+            .: {}
+            f:maxSurge: {}
+            f:maxUnavailable: {}
+          f:type: {}
+        f:template:
+          f:metadata:
+            f:annotations:
+              .: {}
+              f:cattle.io/timestamp: {}
+            f:labels:
+              .: {}
+              f:workload.user.cattle.io/workloadselector: {}
+          f:spec:
+            f:affinity: {}
+            f:containers:
+              k:{"name":"container-0"}:
+                .: {}
+                f:env:
+                  .: {}
+                  k:{"name":"EUREKA_DEFAULT_ZONE"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"RABBIT_URI"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.CONFIG.IMPORT"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.DATASOURCE.PASSWORD"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.DATASOURCE.URL"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.DATASOURCE.USERNAME"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.FLYWAY.PASSWORD"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.FLYWAY.URL"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING.FLYWAY.USER"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"SPRING_RABBITMQ_HOST"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                  k:{"name":"TZ"}:
+                    .: {}
+                    f:name: {}
+                    f:value: {}
+                f:image: {}
+                f:imagePullPolicy: {}
+                f:name: {}
+                f:ports:
+                  .: {}
+                  k:{"containerPort":8083,"protocol":"TCP"}:
+                    .: {}
+                    f:containerPort: {}
+                    f:name: {}
+                    f:protocol: {}
+                f:resources: {}
+                f:terminationMessagePath: {}
+                f:terminationMessagePolicy: {}
+            f:dnsPolicy: {}
+            f:restartPolicy: {}
+            f:schedulerName: {}
+            f:securityContext: {}
+            f:terminationGracePeriodSeconds: {}
+    manager: agent
+    operation: Update
+    time: "2022-03-19T21:03:35Z"
+  - apiVersion: apps/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:deployment.kubernetes.io/revision: {}
+      f:status:
+        f:availableReplicas: {}
+        f:conditions:
+          .: {}
+          k:{"type":"Available"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Progressing"}:
+            .: {}
+            f:lastTransitionTime: {}
+            f:lastUpdateTime: {}
+            f:message: {}
+            f:reason: {}
+            f:status: {}
+            f:type: {}
+        f:observedGeneration: {}
+        f:readyReplicas: {}
+        f:replicas: {}
+        f:updatedReplicas: {}
+    manager: kube-controller-manager
+    operation: Update
+    time: "2022-03-19T21:12:21Z"
+  name: usuarios-service
+  namespace: default
+  resourceVersion: "15357"
+  uid: 46b707f6-243c-486e-afac-109064e965b6
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: apps.deployment-default-usuarios-service
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cattle.io/timestamp: "2022-03-19T21:03:37Z"
+      creationTimestamp: null
+      labels:
+        workload.user.cattle.io/workloadselector: apps.deployment-default-usuarios-service
+    spec:
+      affinity: {}
+      containers:
+      - env:
+        - name: TZ
+          value: America/Sao_Paulo
+        - name: SPRING.CONFIG.IMPORT
+          value: optional:configserver:http://config-server:8888/
+        - name: EUREKA_DEFAULT_ZONE
+          value: http://eureka-server:8761/eureka
+        - name: RABBIT_URI
+          value: amqp://guest:guest@rabbit-mq:5672
+        - name: SPRING_RABBITMQ_HOST
+          value: rabbit-mq
+        - name: SPRING.DATASOURCE.URL
+          value: jdbc:mysql://db-mysql:3306/41scj_ms_usuarios?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+        - name: SPRING.DATASOURCE.USERNAME
+          value: root
+        - name: SPRING.DATASOURCE.PASSWORD
+          value: asd123qwe!
+        - name: SPRING.FLYWAY.URL
+          value: jdbc:mysql://db-mysql:3306/41scj_ms_usuarios?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC&enabledTLSProtocols=TLSv1.2
+        - name: SPRING.FLYWAY.USER
+          value: root
+        - name: SPRING.FLYWAY.PASSWORD
+          value: asd123qwe!
+        image: emersondiaspd/usuarios-service:0.0.1-SNAPSHOT
+        imagePullPolicy: Always
+        name: container-0
+        ports:
+        - containerPort: 8083
+          name: 8083tcp32600
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2022-03-19T21:03:33Z"
+    lastUpdateTime: "2022-03-19T21:03:33Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2022-03-19T20:59:40Z"
+    lastUpdateTime: "2022-03-19T21:12:21Z"
+    message: ReplicaSet "usuarios-service-68fb6579db" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 5
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
